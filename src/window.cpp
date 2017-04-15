@@ -9,7 +9,7 @@ bool cWindow::init( void )
   glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
   glfwWindowHint( GLFW_RESIZABLE, GL_FALSE );
 
-  glfwWindow = glfwCreateWindow( static_cast<int>( width ), static_cast<int>( height ), "LearnOpenGL", nullptr, nullptr );
+  glfwWindow = glfwCreateWindow( static_cast<int>( width ), static_cast<int>( height ), "Poooong", nullptr, nullptr );
   if ( glfwWindow == nullptr )
   {
     std::cout << "Failed to create GLFW window" << std::endl;

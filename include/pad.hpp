@@ -6,16 +6,16 @@
 class cPad : public cObject
 {
 private:
-  bool state_up;
+  bool stateUp;
 
 protected:
-  float speedY;
+  int speedY;
 
 public:
-  explicit cPad( float arg_x, float arg_y, float arg_width, float arg_height )
+  explicit cPad( int arg_x, int arg_y, int arg_width, int arg_height )
   : cObject( arg_x, arg_y, arg_width, arg_height )
-  , state_up( true )
-  , speedY( 0.2F )
+  , stateUp( true )
+  , speedY( 2 )
   {
 
   }
@@ -28,7 +28,7 @@ public:
 class cPlayerPad : public cPad
 {
 public:
-  explicit cPlayerPad( float arg_x, float arg_y, float arg_width, float arg_height )
+  explicit cPlayerPad( int arg_x, int arg_y, int arg_width, int arg_height )
   : cPad( arg_x, arg_y, arg_width, arg_height )
   {
 

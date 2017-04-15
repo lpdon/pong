@@ -1,16 +1,23 @@
 #include "game.hpp"
+#include <iostream>
+
+const int cGame::MIN_X = -100;
+const int cGame::MIN_Y = -100;
+const int cGame::MAX_X =  100;
+const int cGame::MAX_Y =  100;
+const int cGame::SCALE =  100;
 
 cGame::cGame( void )
   : gameObjects()
-  , gameWindow( 800U, 600U, gameObjects )
+  , gameWindow( 800U, 800U, gameObjects )
 {
-  std::unique_ptr<cObject> loc_pPlayerPad( new cPlayerPad( -1.0F, 0.0F, 0.1F, 0.5F ) );
-  std::unique_ptr<cObject> loc_pPad( new cPad( 0.9F, 0.0F, 0.1F, 0.5F ) );
-  //std::unique_ptr<cObject> loc_pObj( make_unique<> cPlayerPad( 0, 0, 0.5, 0.5 ) );
+  std::unique_ptr<cObject> loc_pPlayerPad( new cPlayerPad( MIN_X, 0, 10, 50 ) );
+  std::unique_ptr<cObject> loc_pPad( new cPad( MAX_X - 10, 0, 10, 50 ) );
+  std::unique_ptr<cObject> loc_pBall( new cBall( 0, 50, 10, 10 ) );
+
   gameObjects.push_back( std::move( loc_pPlayerPad ) );
   gameObjects.push_back( std::move( loc_pPad ) );
-  //std::shared_ptr<cObject> loc_pObj( &playerPad );
-  //gameObjects.push_back( loc_pObj );
+  gameObjects.push_back( std::move( loc_pBall ) );
 
   gameWindow.init();
   initObjects();
@@ -29,12 +36,38 @@ void cGame::run( void )
   while ( gameWindow.getStatus() )
   {
     updateObjects();
+    checkCollisions();
     gameWindow.update();
   }
 }
 
 void cGame::updateObjects( void )
 {
+  for ( auto& loc_pObj : gameObjects ) 
+  {
+    loc_pObj->update();
+  }
+}
+
+void cGame::checkCollisions( void )
+{
+  for ( int i = 0; i < gameObjects.size(); ++i )
+  {
+    for ( int j = i + 1; j < gameObjects.size(); ++j )
+    {
+      auto& loc_pObj1 = gameObjects[ i ];
+      auto& loc_pObj2 = gameObjects[ j ];
+
+      const bool loc_xCol = ( loc_pObj1->getX() >= loc_pObj2->getX() ) && ( loc_pObj1->getX() <= ( loc_pObj2->getX() + loc_pObj2->getWidth() ) );
+      const bool loc_yCol = ( loc_pObj1->getY() >= loc_pObj2->getY() ) && ( loc_pObj1->getY() <= ( loc_pObj2->getY() + loc_pObj2->getHeight() ) );
+
+      if ( loc_xCol && loc_yCol )
+      {
+        std::cout << "kapps" << std::endl;
+      }
+    }
+  }
+
   for ( auto& loc_pObj : gameObjects ) 
   {
     loc_pObj->update();

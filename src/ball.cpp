@@ -1,7 +1,7 @@
-#include "pad.hpp"
+#include "ball.hpp"
 #include "game.hpp"
 
-void cPad::init( void )
+void cBall::init( void )
 {
   // https://open.gl/drawing
 
@@ -25,7 +25,7 @@ void cPad::init( void )
     void main()
     {
         //outColor = vec4(Color, 1.0);
-        outColor = vec4(0.5, 0.0, 0.5, 1.0);
+        outColor = vec4(1, 1, 1, 1.0);
     }
 )glsl";
 
@@ -97,13 +97,13 @@ void cPad::init( void )
   //glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 }
 
-void cPad::update( void )
+void cBall::update( void )
 {
   if ( stateUp )
   {
     const int loc_posTest = y + speedY + height; 
 
-    if ( loc_posTest < cGame::MAX_Y )
+    if ( loc_posTest <= cGame::MAX_Y )
     {
       y += speedY;
     }
@@ -116,7 +116,7 @@ void cPad::update( void )
   {
     const int loc_posTest = y - speedY; 
 
-    if ( loc_posTest > cGame::MIN_Y )
+    if ( loc_posTest >= cGame::MIN_Y )
     {
       y -= speedY;
     }
@@ -125,13 +125,40 @@ void cPad::update( void )
       stateUp = true;
     }
   }
+
+  if ( stateRight )
+  {
+    const int loc_posTest = x + speedX + width; 
+
+    if ( loc_posTest <= cGame::MAX_X )
+    {
+      x += speedX;
+    }
+    else
+    {
+      stateRight = false;
+    }
+  }
+  else
+  {
+    const int loc_posTest = x - speedX; 
+
+    if ( loc_posTest >= cGame::MIN_X )
+    {
+      x -= speedX;
+    }
+    else
+    {
+      stateRight = true;
+    }
+  }
 }
 
-void cPad::draw( void )
+void cBall::draw( void )
 {
   glUseProgram( shaderProgram );
   glBindVertexArray( vertexArray );
-  
+
   const GLfloat loc_x = static_cast<GLfloat>( x )/static_cast<GLfloat>( cGame::SCALE );
   const GLfloat loc_y = static_cast<GLfloat>( y )/static_cast<GLfloat>( cGame::SCALE );
   const GLfloat loc_width = static_cast<GLfloat>( width )/static_cast<GLfloat>( cGame::SCALE );
@@ -151,31 +178,4 @@ void cPad::draw( void )
   // draw points 0-3 from the currently bound VAO with current in-use shader
   //glDrawArrays( GL_TRIANGLES, 0, 6 );
   glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
-}
-
-void cPlayerPad::keyInputCallback( int arg_key, int arg_scancode, int arg_action, int arg_mode )
-{
-  switch( arg_key )
-  {
-    case GLFW_KEY_UP:
-    {
-      //if ( arg_action == GLFW_PRESS )
-      {        
-        y += speedY;
-      }
-      break;
-    }
-    case GLFW_KEY_DOWN:
-    {
-      //if ( arg_action == GLFW_PRESS )
-      {
-        y -= speedY;
-      }      
-      break;
-    }
-    default:
-    {
-
-    }
-  } 
 }

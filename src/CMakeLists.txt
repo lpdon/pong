@@ -8,31 +8,23 @@ include_directories (
 
 #find_package (Threads REQUIRED)
 
-set (
-  pong_include_dir 
-  ${PROJECT_SOURCE_DIR}/include/
-)
-
-set (
+file (
+  GLOB_RECURSE
   pong_headers
-  ${pong_include_dir}/object.hpp
-  ${pong_include_dir}/pad.hpp
-  ${pong_include_dir}/window.hpp
-  ${pong_include_dir}/game.hpp
+  "${PROJECT_SOURCE_DIR}/include/*.hpp"
 )
 
-set (
+file (
+  GLOB_RECURSE
   pong_src
-  main.cpp
-  pad.cpp
-  window.cpp
-  game.cpp
+  "${PROJECT_SOURCE_DIR}/src/*.cpp"
 )
 
 add_executable ( 
   pong
-  ${pong_src}
+  #${pong_src}
   ${pong_headers}
+  ${pong_src}
 ) 
 
 target_compile_features( 
