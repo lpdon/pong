@@ -34,6 +34,7 @@ public:
   virtual void init( void ) = 0;
   virtual void update( void ) = 0;
   virtual void draw( void ) = 0;
+  virtual void collision( void ) = 0;
 
   inline virtual void setX( int arg_x )
   {

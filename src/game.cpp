@@ -1,5 +1,4 @@
 #include "game.hpp"
-#include <iostream>
 
 const int cGame::MIN_X = -100;
 const int cGame::MIN_Y = -100;
@@ -58,12 +57,16 @@ void cGame::checkCollisions( void )
       auto& loc_pObj1 = gameObjects[ i ];
       auto& loc_pObj2 = gameObjects[ j ];
 
-      const bool loc_xCol = ( loc_pObj1->getX() >= loc_pObj2->getX() ) && ( loc_pObj1->getX() <= ( loc_pObj2->getX() + loc_pObj2->getWidth() ) );
-      const bool loc_yCol = ( loc_pObj1->getY() >= loc_pObj2->getY() ) && ( loc_pObj1->getY() <= ( loc_pObj2->getY() + loc_pObj2->getHeight() ) );
+      const bool loc_xCol1 = ( loc_pObj1->getX() >= loc_pObj2->getX() ) && ( loc_pObj1->getX() <= ( loc_pObj2->getX() + loc_pObj2->getWidth() ) );
+      const bool loc_xCol2 = ( loc_pObj2->getX() >= loc_pObj1->getX() ) && ( loc_pObj2->getX() <= ( loc_pObj1->getX() + loc_pObj1->getWidth() ) );
+      const bool loc_yCol1 = ( loc_pObj1->getY() >= loc_pObj2->getY() ) && ( loc_pObj1->getY() <= ( loc_pObj2->getY() + loc_pObj2->getHeight() ) );
+      const bool loc_yCol2 = ( loc_pObj2->getY() >= loc_pObj1->getY() ) && ( loc_pObj2->getY() <= ( loc_pObj1->getY() + loc_pObj1->getHeight() ) );
 
-      if ( loc_xCol && loc_yCol )
+      if ( ( loc_xCol1 || loc_xCol2 ) && ( loc_yCol1 || loc_yCol2 ) )
       {
-        std::cout << "kapps" << std::endl;
+        //std::cout << "kapps" << std::endl;
+        loc_pObj1->collision();
+        loc_pObj2->collision();
       }
     }
   }

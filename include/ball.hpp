@@ -22,6 +22,7 @@ public:
   virtual void init( void );
   virtual void update( void );
   virtual void draw( void ); 
+  virtual void collision( void );
 };
 
 #endif
