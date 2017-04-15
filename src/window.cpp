@@ -42,42 +42,16 @@ bool cWindow::init( void )
 
   auto func = []( GLFWwindow * arg_window, int arg_key, int arg_scancode, int arg_action, int arg_mode )
   {
-    static_cast<cWindow*>( glfwGetWindowUserPointer( arg_window ) )->inputCallback( arg_window, arg_key, arg_scancode, arg_action, arg_mode );
+    static_cast<cWindow*>( glfwGetWindowUserPointer( arg_window ) )->keyInputCallback( arg_window, arg_key, arg_scancode, arg_action, arg_mode );
   };
-
-  //auto func = []() { cout << "Hello world"; };
-  /*glfwSetKeyCallback( glfwWindow, inputCallback );*/
   glfwSetKeyCallback( glfwWindow, func );
-
-  //glfwSetWindowUserPointer(glfwWindow, myWindow);
-
-  //auto func = [](GLFWwindow* w, int, int, int)
-  //{
-  //  static_cast<MyGlWindow*>(glfwGetWindowUserPointer(w))->mouseButtonPressed( /* ... */ );
-  //}
-
-  //glfwSetMouseButtonCallback(glfwWindow, func);
-
-
-
-  //glfwSetMouseButtonCallback(glfwWindow, func);
-
-  initObjects();
 
   return true;
 }
 
-void cWindow::initObjects( void )
-{
-  for ( auto loc_pObj : gameObjects ) 
-  {
-    loc_pObj->init();
-  }
-}
-
 void cWindow::update( void )
 {
-  while ( !glfwWindowShouldClose( glfwWindow ) )
+  if ( status )
   {
     glfwPollEvents();
 
@@ -85,18 +59,18 @@ void cWindow::update( void )
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    for ( auto loc_pObj : gameObjects )
-    {
-      loc_pObj->draw();
-    }
+    drawObjects();
 
     glfwSwapBuffers( glfwWindow );
+    status = !glfwWindowShouldClose( glfwWindow );
   }
-
-  glfwTerminate();
+  else
+  {
+    glfwTerminate();
+  }
 }
 
-void cWindow::inputCallback( GLFWwindow * arg_window, int arg_key, int arg_scancode, int arg_action, int arg_mode )
+void cWindow::keyInputCallback( GLFWwindow * arg_window, int arg_key, int arg_scancode, int arg_action, int arg_mode )
 {
   // When a user presses the escape key, we set the WindowShouldClose property to true, 
   // closing the application
@@ -111,21 +85,27 @@ void cWindow::inputCallback( GLFWwindow * arg_window, int arg_key, int arg_scanc
       }
       break;
     }
-    case GLFW_KEY_UP:
-    {
-      auto loc_y = gameObjects.front()->getY();
-      gameObjects.front()->setY( loc_y + 0.01 );
-      break;
-    }
-    case GLFW_KEY_DOWN:
-    {
-      auto loc_y = gameObjects.front()->getY();
-      gameObjects.front()->setY( loc_y - 0.01 );
-      break;
-    }
     default:
     {
 
     }
   } 
+
+  objectsInputKeyCallback( arg_key, arg_scancode, arg_action, arg_mode );
+}
+
+void cWindow::drawObjects( void )
+{
+  for ( auto& loc_pObj : gameObjects )
+  {
+    loc_pObj->draw();
+  }
+}
+
+void cWindow::objectsInputKeyCallback( int arg_key, int arg_scancode, int arg_action, int arg_mode )
+{
+  for ( auto& loc_pObj : gameObjects )
+  {
+    loc_pObj->keyInputCallback( arg_key, arg_scancode, arg_action, arg_mode );
+  }
 }

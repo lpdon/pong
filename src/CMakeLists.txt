@@ -18,6 +18,7 @@ set (
   ${pong_include_dir}/object.hpp
   ${pong_include_dir}/pad.hpp
   ${pong_include_dir}/window.hpp
+  ${pong_include_dir}/game.hpp
 )
 
 set (
@@ -25,6 +26,7 @@ set (
   main.cpp
   pad.cpp
   window.cpp
+  game.cpp
 )
 
 add_executable ( 
@@ -32,6 +34,13 @@ add_executable (
   ${pong_src}
   ${pong_headers}
 ) 
+
+target_compile_features( 
+  pong PRIVATE 
+  cxx_auto_type 
+  cxx_nullptr 
+  cxx_lambdas 
+)
 
 set (
   glew_lib

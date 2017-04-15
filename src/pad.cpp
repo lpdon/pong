@@ -42,13 +42,6 @@ void cPad::init( void )
   glGenBuffers(1, &vbo);
   vertexBuffer = vbo;
 
-  //GLfloat vertices[] = {
-  //  -0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // Top-left
-  //  0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top-right
-  //  0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
-  //  -0.5f, -0.5f, 1.0f, 1.0f, 1.0f  // Bottom-left
-  //};
-
   const GLfloat vertices[] = {
     x,         y,           0.0f, 0.0f, 0.0f, // Top-left
     x,         y + height,  0.0f, 1.0f, 0.0f, // Top-right
@@ -101,7 +94,32 @@ void cPad::init( void )
 
 void cPad::update( void )
 {
+  if ( state_up )
+  {
+    const float loc_newPos = y + speedY; 
 
+    if ( loc_newPos < 1.0F )
+    {
+      y = loc_newPos;
+    }
+    else
+    {
+      state_up = false;
+    }
+  }
+  else
+  {
+    const float loc_newPos = y - speedY; 
+
+    if ( loc_newPos > -1.0F )
+    {
+      y = loc_newPos;
+    }
+    else
+    {
+      state_up = true;
+    }
+  }
 }
 
 void cPad::draw( void )
@@ -120,17 +138,33 @@ void cPad::draw( void )
   glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
 
   // draw points 0-3 from the currently bound VAO with current in-use shader
-  //glDrawArrays( GL_QUADS, 0, 4 );
   //glDrawArrays( GL_TRIANGLES, 0, 6 );
   glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
 }
 
-GLuint cPad::getVertexArray( void )
+void cPlayerPad::keyInputCallback( int arg_key, int arg_scancode, int arg_action, int arg_mode )
 {
-  return this->vertexArray;
-}
+  switch( arg_key )
+  {
+    case GLFW_KEY_UP:
+    {
+      if ( arg_action == GLFW_PRESS )
+      {        
+        y += speedY;
+      }
+      break;
+    }
+    case GLFW_KEY_DOWN:
+    {
+      if ( arg_action == GLFW_PRESS )
+      {
+        y -= speedY;
+      }      
+      break;
+    }
+    default:
+    {
 
-GLuint cPad::getShaderProgram( void )
-{
-  return this->shaderProgram;
+    }
+  } 
 }

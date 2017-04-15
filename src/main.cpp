@@ -9,24 +9,13 @@
 #include <iostream>
 #include <vector>
 
-#include "window.hpp"
-#include "pad.hpp"
+#include "game.hpp"
 
 using namespace std;
 
 int main() {
-  cPad pad( 0, 0, 0.5, 0.5 );
+  cGame loc_game;
+  loc_game.run();  
 
-  vector<cObject *> loc_vec;
-  loc_vec.push_back( &pad );
-
-  cWindow loc_window( 800U, 600U, loc_vec );
-
-  if ( loc_window.init() )  
-  {
-    loc_window.update();
-  }
-
-  //system( "PAUSE" );
 	return 0;
 }

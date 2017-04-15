@@ -34,8 +34,6 @@ public:
   virtual void init( void ) = 0;
   virtual void update( void ) = 0;
   virtual void draw( void ) = 0;
-  virtual GLuint getVertexArray( void ) = 0;
-  virtual GLuint getShaderProgram( void ) = 0;
 
   inline virtual void setX( float arg_x )
   {
@@ -52,10 +50,16 @@ public:
     return x;
   }
 
-  inline virtual float  getY( void )
+  inline virtual float getY( void )
   {
     return y;
   }
+  
+  virtual void keyInputCallback( int arg_key, int arg_scancode, int arg_action, int arg_mode )
+  {
+
+  }
+
 };
 
 
