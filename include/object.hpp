@@ -35,6 +35,7 @@ public:
   virtual void update( void ) = 0;
   virtual void draw( void ) = 0;
   virtual void collision( void ) = 0;
+  virtual void reset( void ) = 0;
 
   inline virtual void setX( int arg_x )
   {
@@ -46,22 +47,22 @@ public:
     this->y = arg_y;
   }
 
-  inline virtual int getX( void )
+  inline virtual int getX( void ) const
   {
     return x;
   }
 
-  inline virtual int getY( void )
+  inline virtual int getY( void ) const
   {
     return y;
   }
 
-  inline virtual int getWidth( void )
+  inline virtual int getWidth( void ) const
   {
     return width;
   }
 
-  inline virtual int getHeight( void )
+  inline virtual int getHeight( void ) const
   {
     return height;
   }

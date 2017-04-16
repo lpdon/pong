@@ -128,29 +128,31 @@ void cBall::update( void )
 
   if ( stateRight )
   {
-    const int loc_posTest = x + speedX + width; 
+    //const int loc_posTest = x + speedX + width; 
 
-    if ( loc_posTest <= cGame::MAX_X )
-    {
-      x += speedX;
-    }
-    else
-    {
-      stateRight = false;
-    }
+    //if ( loc_posTest <= cGame::MAX_X )
+    //{
+    //  x += speedX;
+    //}
+    //else
+    //{
+    //  stateRight = false;
+    //}
+    x += speedX;
   }
   else
   {
-    const int loc_posTest = x - speedX; 
+    //const int loc_posTest = x - speedX; 
 
-    if ( loc_posTest >= cGame::MIN_X )
-    {
-      x -= speedX;
-    }
-    else
-    {
-      stateRight = true;
-    }
+    //if ( loc_posTest >= cGame::MIN_X )
+    //{
+    //  x -= speedX;
+    //}
+    //else
+    //{
+    //  stateRight = true;
+    //}
+    x -= speedX;
   }
 }
 
@@ -182,6 +184,20 @@ void cBall::draw( void )
 
 void cBall::collision( void )
 {
-  //stateUp = !stateUp;
-  stateRight = !stateRight;
+  const int MAX_COL = 5;
+
+  colDebounce = ( colDebounce < MAX_COL ) ? ( colDebounce + 1 ) : MAX_COL;
+
+  //if ( colDebounce == MAX_COL )
+  {
+    //stateUp = !stateUp;
+    stateRight = !stateRight;
+    colDebounce = 0;
+  }
+}
+
+void cBall::reset( void )
+{
+  x = startX;
+  y = startY;
 }

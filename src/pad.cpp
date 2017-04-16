@@ -103,7 +103,7 @@ void cPad::update( void )
   {
     const int loc_posTest = y + speedY + height; 
 
-    if ( loc_posTest < cGame::MAX_Y )
+    if ( loc_posTest < ref_ball.getY() )
     {
       y += speedY;
     }
@@ -116,7 +116,7 @@ void cPad::update( void )
   {
     const int loc_posTest = y - speedY; 
 
-    if ( loc_posTest > cGame::MIN_Y )
+    if ( loc_posTest > ref_ball.getY() )
     {
       y -= speedY;
     }

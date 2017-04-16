@@ -20,8 +20,7 @@ private:
   const std::vector<std::unique_ptr<cObject>>& gameObjects;
   bool status;
 
-  //typedef void (* GLFWkeyfun)(GLFWwindow*,int,int,int,int);
-  void keyInputCallback( GLFWwindow * arg_window, int arg_key, int arg_scancode, int arg_action, int arg_mode );
+  void keyInputCallback( int arg_key, int arg_scancode, int arg_action, int arg_mode );
   
   void drawObjects( void );
   void objectsInputKeyCallback( int arg_key, int arg_scancode, int arg_action, int arg_mode );

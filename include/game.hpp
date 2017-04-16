@@ -18,6 +18,7 @@ private:
   void initObjects( void );
   void updateObjects( void );
   void checkCollisions( void );
+  void resetObjects( void );
 
 public:
   static const int MIN_X, MAX_X;

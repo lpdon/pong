@@ -9,7 +9,7 @@ bool cWindow::init( void )
   glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
   glfwWindowHint( GLFW_RESIZABLE, GL_FALSE );
 
-  glfwWindow = glfwCreateWindow( static_cast<int>( width ), static_cast<int>( height ), "Poooong", nullptr, nullptr );
+  glfwWindow = glfwCreateWindow( static_cast<int>( width ), static_cast<int>( height ), "Pong", nullptr, nullptr );
   if ( glfwWindow == nullptr )
   {
     std::cout << "Failed to create GLFW window" << std::endl;
@@ -25,26 +25,26 @@ bool cWindow::init( void )
     return false;
   }
 
-  const GLubyte* renderer = glGetString(GL_RENDERER); // get renderer string
-  const GLubyte* version = glGetString(GL_VERSION); // version as a string
-  printf("Renderer: %s\n", renderer);
-  printf("OpenGL version supported %s\n", version);
+  const GLubyte* renderer = glGetString( GL_RENDERER ); // get renderer string
+  const GLubyte* version = glGetString( GL_VERSION ); // version as a string
+  std::cout << "Renderer: " << renderer << std::endl;
+  std::cout << "OpenGL version supported: " << version << std::endl;
 
   int loc_width, loc_height;
   glfwGetFramebufferSize( glfwWindow, &loc_width, &loc_height );
 
   glViewport( 0, 0, loc_width, loc_height );
 
-  glEnable(GL_DEPTH_TEST); // enable depth-testing
-  glDepthFunc(GL_LESS); // depth-testing interprets a smaller value as "closer"
+  glEnable( GL_DEPTH_TEST ); // enable depth-testing
+  glDepthFunc( GL_LESS ); // depth-testing interprets a smaller value as "closer"
 
   glfwSetWindowUserPointer( glfwWindow, this );
 
-  auto func = []( GLFWwindow * arg_window, int arg_key, int arg_scancode, int arg_action, int arg_mode )
+  auto glfwKeyCallback = []( GLFWwindow * arg_window, int arg_key, int arg_scancode, int arg_action, int arg_mode )
   {
-    static_cast<cWindow*>( glfwGetWindowUserPointer( arg_window ) )->keyInputCallback( arg_window, arg_key, arg_scancode, arg_action, arg_mode );
+    static_cast<cWindow*>( glfwGetWindowUserPointer( arg_window ) )->keyInputCallback( arg_key, arg_scancode, arg_action, arg_mode );
   };
-  glfwSetKeyCallback( glfwWindow, func );
+  glfwSetKeyCallback( glfwWindow, glfwKeyCallback );
 
   return true;
 }
@@ -70,7 +70,7 @@ void cWindow::update( void )
   }
 }
 
-void cWindow::keyInputCallback( GLFWwindow * arg_window, int arg_key, int arg_scancode, int arg_action, int arg_mode )
+void cWindow::keyInputCallback( int arg_key, int arg_scancode, int arg_action, int arg_mode )
 {
   // When a user presses the escape key, we set the WindowShouldClose property to true, 
   // closing the application
@@ -81,7 +81,7 @@ void cWindow::keyInputCallback( GLFWwindow * arg_window, int arg_key, int arg_sc
     {
       if ( arg_action == GLFW_PRESS )
       {
-        glfwSetWindowShouldClose( arg_window, GL_TRUE );
+        glfwSetWindowShouldClose( glfwWindow, GL_TRUE );
       }
       break;
     }

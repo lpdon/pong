@@ -10,9 +10,11 @@ cGame::cGame( void )
   : gameObjects()
   , gameWindow( 800U, 800U, gameObjects )
 {
-  std::unique_ptr<cObject> loc_pPlayerPad( new cPlayerPad( MIN_X, 0, 10, 50 ) );
-  std::unique_ptr<cObject> loc_pPad( new cPad( MAX_X - 10, 0, 10, 50 ) );
-  std::unique_ptr<cObject> loc_pBall( new cBall( 0, 50, 10, 10 ) );
+  cBall * loc_ball = new cBall( 0, 50, 10, 10 );
+
+  std::unique_ptr<cObject> loc_pBall( std::move( loc_ball ) );
+  std::unique_ptr<cObject> loc_pPlayerPad( new cPlayerPad( MIN_X, 0, 5, 50, *loc_ball ) );
+  std::unique_ptr<cObject> loc_pPad( new cPad( MAX_X - 5, 0, 5, 50, *loc_ball ) );
 
   gameObjects.push_back( std::move( loc_pPlayerPad ) );
   gameObjects.push_back( std::move( loc_pPad ) );
@@ -50,9 +52,9 @@ void cGame::updateObjects( void )
 
 void cGame::checkCollisions( void )
 {
-  for ( int i = 0; i < gameObjects.size(); ++i )
+  for ( unsigned int i = 0; i < gameObjects.size(); ++i )
   {
-    for ( int j = i + 1; j < gameObjects.size(); ++j )
+    for ( unsigned int j = i + 1; j < gameObjects.size(); ++j )
     {
       auto& loc_pObj1 = gameObjects[ i ];
       auto& loc_pObj2 = gameObjects[ j ];
@@ -71,8 +73,20 @@ void cGame::checkCollisions( void )
     }
   }
 
+  // out of bounds
   for ( auto& loc_pObj : gameObjects ) 
   {
-    loc_pObj->update();
+    if ( ( loc_pObj->getX() < MIN_X ) || ( loc_pObj->getX() + loc_pObj->getWidth() > MAX_X ) )
+    {
+      loc_pObj->reset();
+    }
+  }
+}
+
+void cGame::resetObjects( void )
+{
+  for ( auto& loc_pObj : gameObjects ) 
+  {
+    loc_pObj->reset();
   }
 }
