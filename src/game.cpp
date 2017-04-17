@@ -13,8 +13,8 @@ cGame::cGame( void )
   cBall * loc_ball = new cBall( 0, 50, 10, 10 );
 
   std::unique_ptr<cObject> loc_pBall( std::move( loc_ball ) );
-  std::unique_ptr<cObject> loc_pPlayerPad( new cPlayerPad( MIN_X, 0, 5, 50, *loc_ball ) );
-  std::unique_ptr<cObject> loc_pPad( new cPad( MAX_X - 5, 0, 5, 50, *loc_ball ) );
+  std::unique_ptr<cObject> loc_pPlayerPad( new cPlayerPad( MIN_X, 0, 2, 50, *loc_ball ) );
+  std::unique_ptr<cObject> loc_pPad( new cPad( MAX_X - 2, 0, 2, 50, *loc_ball ) );
 
   gameObjects.push_back( std::move( loc_pPlayerPad ) );
   gameObjects.push_back( std::move( loc_pPad ) );

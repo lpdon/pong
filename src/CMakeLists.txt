@@ -4,6 +4,7 @@ include_directories (
   ${PROJECT_SOURCE_DIR}/include/
   ${PROJECT_SOURCE_DIR}/lib/glfw/include
   ${PROJECT_SOURCE_DIR}/lib/glew-2.0.0/include
+  ${PROJECT_SOURCE_DIR}/lib/zeromq-4.2.1/include
 )
 
 file (
@@ -38,6 +39,8 @@ set (
 
 find_package(OpenGL REQUIRED)
 
+target_compile_definitions(pong PRIVATE GLEW_STATIC ZMQ_STATIC)
+
 target_link_libraries ( 
   pong 
   ${CMAKE_THREAD_LIBS_INIT}
@@ -45,4 +48,15 @@ target_link_libraries (
   ${GLFW_LIBRARIES}
   ${glew_lib}
   ${OPENGL_gl_LIBRARY}
+  #libzmq
+  libzmq-static
  )
+
+if(WIN32)
+ target_link_libraries ( 
+  pong 
+  wsock32 
+  ws2_32
+  Iphlpapi
+)
+endif()

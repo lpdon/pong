@@ -11,6 +11,6 @@ endif ()
 
 project ( pong C CXX )
 
-add_subdirectory ( ${PROJECT_SOURCE_DIR}/lib/glfw/ )  
-
+add_subdirectory ( ${PROJECT_SOURCE_DIR}/lib/glfw/ )   
+add_subdirectory ( ${PROJECT_SOURCE_DIR}/lib/zeromq-4.2.1/ )  
 add_subdirectory ( src )
