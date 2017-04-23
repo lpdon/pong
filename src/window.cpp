@@ -40,11 +40,11 @@ bool cWindow::init( void )
 
   glfwSetWindowUserPointer( glfwWindow, this );
 
-  auto glfwKeyCallback = []( GLFWwindow * arg_window, int arg_key, int arg_scancode, int arg_action, int arg_mode )
+  auto loc_glfwKeyCallback = []( GLFWwindow * arg_window, int arg_key, int arg_scancode, int arg_action, int arg_mode )
   {
     static_cast<cWindow*>( glfwGetWindowUserPointer( arg_window ) )->keyInputCallback( arg_key, arg_scancode, arg_action, arg_mode );
   };
-  glfwSetKeyCallback( glfwWindow, glfwKeyCallback );
+  glfwSetKeyCallback( glfwWindow, loc_glfwKeyCallback );
 
   return true;
 }

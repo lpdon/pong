@@ -3,6 +3,7 @@
 
 #include "object.hpp"
 #include "ball.hpp"
+#include <thread>
 
 class cPad : public cObject
 {
@@ -40,6 +41,11 @@ public:
 
 class cPlayerPad : public cPad
 {
+private:
+  std::thread socketThread;
+
+  void remoteControl( void );
+
 public:
   explicit cPlayerPad( int arg_x, int arg_y, int arg_width, int arg_height, const cBall& arg_ref_ball )
   : cPad( arg_x, arg_y, arg_width, arg_height, arg_ref_ball )
@@ -47,12 +53,24 @@ public:
 
   }
 
+  virtual void init( void );
+
   virtual void update( void )
   {
     // do nothing...
   }
 
   virtual void keyInputCallback( int arg_key, int arg_scancode, int arg_action, int arg_mode );
+
+  inline void moveUp( void )
+  {
+    y += speedY;
+  }
+
+  inline void moveDown( void )
+  {
+    y -= speedY;
+  }
 };
 
 

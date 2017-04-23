@@ -128,30 +128,10 @@ void cBall::update( void )
 
   if ( stateRight )
   {
-    //const int loc_posTest = x + speedX + width; 
-
-    //if ( loc_posTest <= cGame::MAX_X )
-    //{
-    //  x += speedX;
-    //}
-    //else
-    //{
-    //  stateRight = false;
-    //}
     x += speedX;
   }
   else
   {
-    //const int loc_posTest = x - speedX; 
-
-    //if ( loc_posTest >= cGame::MIN_X )
-    //{
-    //  x -= speedX;
-    //}
-    //else
-    //{
-    //  stateRight = true;
-    //}
     x -= speedX;
   }
 }

@@ -16,7 +16,7 @@ private:
   uint16_t width;
   uint16_t height; 
   GLFWwindow * glfwWindow;
-  const std::vector<std::unique_ptr<cObject>>& gameObjects;
+  const std::vector<cObject *>& gameObjects;
   bool status;
 
   void keyInputCallback( int arg_key, int arg_scancode, int arg_action, int arg_mode );
@@ -25,7 +25,7 @@ private:
   void objectsInputKeyCallback( int arg_key, int arg_scancode, int arg_action, int arg_mode );
 
 public:
-  cWindow( uint16_t arg_width, uint16_t arg_height, const std::vector<std::unique_ptr<cObject>>& arg_objects )
+  cWindow( uint16_t arg_width, uint16_t arg_height, const std::vector<cObject *>& arg_objects )
   : width( arg_width )
   , height( arg_height )
   , glfwWindow( nullptr )

@@ -1,6 +1,17 @@
 #include "pad.hpp"
 #include "game.hpp"
 
+#include "zmq.hpp"
+#include <string>
+#include <iostream>
+#ifndef _WIN32
+#include <unistd.h>
+#else
+#include <windows.h>
+
+#define sleep(n)	Sleep(n)
+#endif
+
 void cPad::init( void )
 {
   // https://open.gl/drawing
@@ -153,6 +164,12 @@ void cPad::draw( void )
   glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
 }
 
+void cPlayerPad::init( void )
+{
+  cPad::init();
+  socketThread = std::thread( [ this ] { remoteControl(); } );
+}
+
 void cPlayerPad::keyInputCallback( int arg_key, int arg_scancode, int arg_action, int arg_mode )
 {
   switch( arg_key )
@@ -161,7 +178,7 @@ void cPlayerPad::keyInputCallback( int arg_key, int arg_scancode, int arg_action
     {
       //if ( arg_action == GLFW_PRESS )
       {        
-        y += speedY;
+        moveUp();
       }
       break;
     }
@@ -169,7 +186,7 @@ void cPlayerPad::keyInputCallback( int arg_key, int arg_scancode, int arg_action
     {
       //if ( arg_action == GLFW_PRESS )
       {
-        y -= speedY;
+        moveDown();
       }      
       break;
     }
@@ -178,4 +195,49 @@ void cPlayerPad::keyInputCallback( int arg_key, int arg_scancode, int arg_action
 
     }
   } 
+}
+
+void cPlayerPad::remoteControl( void )
+{
+  zmq::context_t context ( 1 );
+  zmq::socket_t socket ( context, ZMQ_REP );
+  socket.bind ( "tcp://*:5555" );
+
+  while ( true ) {
+    zmq::message_t loc_request;
+
+    //  Wait for next request from client
+    socket.recv ( &loc_request );
+    std::string loc_msg = std::string( static_cast<char *>( loc_request.data() ), loc_request.size() );
+    std::cout << "Received " << loc_msg << std::endl;
+
+    struct posData
+    {
+      int ballPos[ 2U ];
+      int padPos[ 2U ];
+    };
+
+    posData loc_data { ref_ball.getX(), ref_ball.getY(), this->x, this->y };
+
+    //  Send reply back to client
+    zmq::message_t reply( sizeof( loc_data ) );
+    memcpy ( reply.data (), &loc_data, sizeof( loc_data ) );
+
+    socket.send (reply);
+
+    zmq::message_t loc_cmd;
+    socket.recv( &loc_cmd );
+    loc_msg = std::string( static_cast<char *>( loc_cmd.data() ), loc_cmd.size() );
+
+    if ( loc_cmd.size() == 2U )
+    {
+      this->moveUp();
+    }
+    else
+    {
+      this->moveDown();
+    }
+
+    socket.send (reply); // dummy
+  }
 }

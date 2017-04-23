@@ -1,24 +1,15 @@
 #include "game.hpp"
 
-const int cGame::MIN_X = -100;
-const int cGame::MIN_Y = -100;
-const int cGame::MAX_X =  100;
-const int cGame::MAX_Y =  100;
-const int cGame::SCALE =  100;
-
 cGame::cGame( void )
   : gameObjects()
   , gameWindow( 800U, 800U, gameObjects )
+  , ball( 0, 50, 10, 10 )
+  , playerPad( MIN_X, 0, 2, 50, ball ) 
+  , botPad( MAX_X - 2, 0, 2, 50, ball )
 {
-  cBall * loc_ball = new cBall( 0, 50, 10, 10 );
-
-  std::unique_ptr<cObject> loc_pBall( std::move( loc_ball ) );
-  std::unique_ptr<cObject> loc_pPlayerPad( new cPlayerPad( MIN_X, 0, 2, 50, *loc_ball ) );
-  std::unique_ptr<cObject> loc_pPad( new cPad( MAX_X - 2, 0, 2, 50, *loc_ball ) );
-
-  gameObjects.push_back( std::move( loc_pPlayerPad ) );
-  gameObjects.push_back( std::move( loc_pPad ) );
-  gameObjects.push_back( std::move( loc_pBall ) );
+  gameObjects.push_back( &playerPad );
+  gameObjects.push_back( &botPad );
+  gameObjects.push_back( &ball );
 
   gameWindow.init();
   initObjects();
@@ -35,7 +26,7 @@ void cGame::initObjects( void )
 void cGame::run( void )
 {
   while ( gameWindow.getStatus() )
-  {
+  { 
     updateObjects();
     checkCollisions();
     gameWindow.update();
