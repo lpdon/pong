@@ -46,6 +46,7 @@ bool cWindow::init( void )
   };
   glfwSetKeyCallback( glfwWindow, loc_glfwKeyCallback );
 
+  status = true;
   return true;
 }
 

@@ -2,7 +2,7 @@
 #define WINDOW_HPP
 
 #include <GL/glew.h>
-#include <GLFW\glfw3.h>
+#include <GLFW/glfw3.h>
 
 #include <inttypes.h>
 #include <vector>
@@ -30,7 +30,7 @@ public:
   , height( arg_height )
   , glfwWindow( nullptr )
   , gameObjects( arg_objects )
-  , status( true )
+  , status( false )
   {
 
   }

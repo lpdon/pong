@@ -3,7 +3,6 @@
 include_directories ( 
   ${PROJECT_SOURCE_DIR}/include/
   ${PROJECT_SOURCE_DIR}/lib/glfw/include
-  ${PROJECT_SOURCE_DIR}/lib/glew-2.0.0/include
   ${PROJECT_SOURCE_DIR}/lib/zeromq-4.2.1/include
 )
 
@@ -32,10 +31,24 @@ target_compile_features(
   cxx_lambdas 
 )
 
+if(WIN32)
+include_directories (
+  ${PROJECT_SOURCE_DIR}/lib/glew-2.0.0/include
+)
+
 set (
   glew_lib
   ${PROJECT_SOURCE_DIR}/lib/glew-2.0.0/lib/Release/Win32/glew32s.lib
 )
+else()
+find_package(GLEW REQUIRED)
+include_directories(${GLEW_INCLUDE_DIRS})
+#link_libraries(${GLEW_LIBRARIES})
+set (
+  glew_lib
+  ${GLEW_LIBRARIES}
+)
+endif()
 
 find_package(OpenGL REQUIRED)
 

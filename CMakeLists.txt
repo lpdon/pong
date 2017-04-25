@@ -9,6 +9,9 @@ set ( CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread" )
 add_definitions( "-DHAVE_STRUCT_TIMESPEC -Wall -pthread" )
 endif ()
 
+#add_definitions  ( "-DBUILD_STATIC_LIBS=ON" )
+#option(BUILD_STATIC_LIBS "Set to ON to build static libraries" ON)
+
 project ( pong C CXX )
 
 add_subdirectory ( ${PROJECT_SOURCE_DIR}/lib/glfw/ )   

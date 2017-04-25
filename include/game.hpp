@@ -13,15 +13,14 @@ class cGame
 private:
   std::vector<cObject *> gameObjects;
   cWindow gameWindow;
+  cBall ball;
   cPlayerPad playerPad;
   cPad botPad;
-  cBall ball;
 
   void initObjects( void );
   void updateObjects( void );
   void checkCollisions( void );
   void resetObjects( void );
-  void remotePad( void );
 
 public:
   static constexpr int MIN_X = -100;
