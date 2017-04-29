@@ -2,7 +2,7 @@
 
 ###About
 
-WIP pong playground written in C++>11 and using OpenGL for remote AI implemented in Python. Communication between C++ is done with ZeroMQ.
+WIP pong playground written in C++>11 and using OpenGL for remote AI implemented in Python. Communication between C++ and Python is done with ZeroMQ.
 
 
 ###Install instructions
