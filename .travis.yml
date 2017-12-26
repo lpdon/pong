@@ -26,4 +26,5 @@ addons:
     packages:
       - cmake-data
       - cmake
-      - freeglut3-dev
+      - xorg-dev 
+      - libglu1-mesa-dev
