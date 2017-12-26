@@ -1,3 +1,5 @@
+![Build Status](https://travis-ci.org/lpdon/pong.svg?branch=master)
+
 # pong
 
 ###About
