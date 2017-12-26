@@ -1,0 +1,27 @@
+language: cpp
+sudo: required
+
+compiler: 
+	- clang 
+	- gcc
+
+git: 
+	submodules: false
+
+before_install:
+
+
+before_script:
+	- git submodule update --init
+	- mkdir build
+	- cd build
+	- cmake ..
+	- make
+
+addons:
+	apt:
+		sources:
+			- george-edison55-precise-backports
+		packages:
+			- cmake-data
+			- cmake
