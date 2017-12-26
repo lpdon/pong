@@ -1,0 +1,33 @@
+language: cpp
+sudo: required
+
+compiler: 
+  - clang 
+  - gcc
+
+git: 
+  submodules: false
+
+before_install:
+
+
+before_script:
+  - git submodule update --init
+  - mkdir build
+  - cd build
+  - cmake ..
+
+script:
+  - make
+
+addons:
+  apt:
+    sources:
+      - george-edison55-precise-backports
+      - ubuntu-toolchain-r-test
+    packages:
+      - cmake-data
+      - cmake
+      - xorg-dev 
+      - libglu1-mesa-dev
+      - libglew-dev
