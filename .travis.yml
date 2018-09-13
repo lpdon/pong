@@ -18,7 +18,7 @@ before_script:
   - cmake ..
 
 script:
-  - make
+  - make -j -l8
 
 addons:
   apt:
